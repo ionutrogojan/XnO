@@ -3,13 +3,13 @@
 
 #define ROW_LEN 3
 #define GRID_LEN (ROW_LEN * ROW_LEN)
-#define GRID_GAP 4
+#define CELL_GAP 4
 #define CELL_SIZE 128
-#define CANVAS_SIZE (ROW_LEN * CELL_SIZE + (ROW_LEN - 1) * GRID_GAP)
+#define CANVAS_SIZE (ROW_LEN * CELL_SIZE + (ROW_LEN - 1) * CELL_GAP)
 
 #define CALC_X(i) (i % ROW_LEN)
 #define CALC_Y(i) (i / ROW_LEN)
-#define CALC_COORD(i) (i * CELL_SIZE + i * GRID_GAP)
+#define CALC_COORD(i) (i * CELL_SIZE + i * CELL_GAP)
 
 #define TEXT_SIZE 24
 
@@ -47,7 +47,7 @@ int main(void) {
 	Vector2 mousePos = { 0, 0 };
 
 	int cellActive = -1;
-	int gameDone = 1;
+	int gameDone = true;
 	int currentPlayer = X;
 	char currentSymbol = cellName[currentPlayer];
 
@@ -62,12 +62,12 @@ int main(void) {
 	SetTextureFilter(fnt.texture, TEXTURE_FILTER_BILINEAR);
 
 	while (!WindowShouldClose()) {
-		gameDone = 1;
+		gameDone = true;
 
-		// Check if we're done playing
+		// Check if we're done playing (temporary)
 		for (int i = 0; i < GRID_LEN; i++) {
 			if (grid[i] == N) {
-				gameDone--;
+				gameDone = false;
 				break;
 			}
 		}
@@ -81,7 +81,7 @@ int main(void) {
 			// TraceLog(LOG_ERROR, "INDEX %d, %d", (int)cellIndex.x, (int)cellIndex.y);
 			
 			// Get the cell index to update
-			cellActive = ((int)(mousePos.y / (CELL_SIZE + GRID_GAP)) * ROW_LEN) + (int)(mousePos.x / (CELL_SIZE + GRID_GAP));
+			cellActive = ((int)(mousePos.y / (CELL_SIZE + CELL_GAP)) * ROW_LEN) + (int)(mousePos.x / (CELL_SIZE + CELL_GAP));
 			// TraceLog(LOG_ERROR, "ACTIVE %d", cellActive);
 
 			// update the cell with the active player if empty
